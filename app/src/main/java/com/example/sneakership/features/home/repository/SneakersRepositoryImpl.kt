@@ -1,6 +1,5 @@
 package com.example.sneakership.features.home.repository
 
-import androidx.compose.ui.graphics.Color
 import com.example.sneakership.features.home.models.Sneaker
 import java.util.Random
 import javax.inject.Inject
@@ -24,7 +23,7 @@ class SneakersRepositoryImpl @Inject constructor() : SneakersRepository {
                         brand = brand,
                         price = random.nextInt(8000) + 2000,
                         sizes = listOf(7, 8, 9),
-                        colors = listOf(Color.White, Color.Black, Color.Yellow)
+                        colors = listOf("FF0000", "00FF00", "0000FF")
                     )
                 )
             }

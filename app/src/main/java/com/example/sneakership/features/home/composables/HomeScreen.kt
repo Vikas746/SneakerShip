@@ -22,18 +22,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sneakership.R
+import com.example.sneakership.features.home.models.Sneaker
 import com.example.sneakership.features.home.viewmodels.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(), onSneakerClick: (sneaker: Sneaker) -> Unit
 ) {
     Scaffold(
         topBar = { HomeScreenTopBar() }
     ) { paddingValues ->
         Surface(modifier = Modifier.padding(paddingValues)) {
-            HomeScreenContent(homeViewModel)
+            HomeScreenContent(homeViewModel) {
+                onSneakerClick(it)
+            }
         }
     }
 }
@@ -58,7 +61,7 @@ fun HomeScreenTopBar() {
 }
 
 @Composable
-fun HomeScreenContent(homeViewModel: HomeViewModel) {
+fun HomeScreenContent(homeViewModel: HomeViewModel, onSneakerClick: (sneaker: Sneaker) -> Unit) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(24.dp),
@@ -66,7 +69,9 @@ fun HomeScreenContent(homeViewModel: HomeViewModel) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(homeViewModel.homeUiState.sneakers) {
-            Sneaker(sneaker = it)
+            Sneaker(sneaker = it) {
+                onSneakerClick(it)
+            }
         }
     }
 }

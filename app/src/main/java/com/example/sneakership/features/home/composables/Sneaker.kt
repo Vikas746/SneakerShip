@@ -1,6 +1,7 @@
 package com.example.sneakership.features.home.composables
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,11 +27,14 @@ import com.example.sneakership.R
 import com.example.sneakership.features.home.models.Sneaker
 
 @Composable
-fun Sneaker(sneaker: Sneaker) {
+fun Sneaker(sneaker: Sneaker, onSneakerClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp),
+            .height(200.dp)
+            .clickable {
+                onSneakerClick()
+            },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)

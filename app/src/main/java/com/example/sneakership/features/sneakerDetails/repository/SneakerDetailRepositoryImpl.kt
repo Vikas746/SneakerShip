@@ -13,10 +13,10 @@ class SneakerDetailRepositoryImpl @Inject constructor(private val sneakerDetailD
     }
 
     override suspend fun deleteSneakerDetail(sneakerDetail: SneakerDetail) {
-        sneakerDetailDao.insertSneaker(sneakerDetail)
+        sneakerDetailDao.deleteSneaker(sneakerDetail)
     }
 
-    override suspend fun fetchSneakers(): Flow<List<SneakerDetail>> {
+    override fun fetchSneakers(): Flow<List<SneakerDetail>> {
         return sneakerDetailDao.fetchSneakers()
     }
 }

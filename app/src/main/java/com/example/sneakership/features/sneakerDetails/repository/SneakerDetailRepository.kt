@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface SneakerDetailRepository {
     suspend fun insertSneakerDetail(sneakerDetail: SneakerDetail)
     suspend fun deleteSneakerDetail(sneakerDetail: SneakerDetail)
-    suspend fun fetchSneakers(): Flow<List<SneakerDetail>>
+    fun fetchSneakers(): Flow<List<SneakerDetail>>
 }

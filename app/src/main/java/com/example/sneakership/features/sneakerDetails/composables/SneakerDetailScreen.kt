@@ -60,7 +60,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun SneakerDetailScreen(
     sneakerDetailViewModel: SneakerDetailViewModel = hiltViewModel(),
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onCartClick: () -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -70,7 +71,8 @@ fun SneakerDetailScreen(
         topBar = {
             SneakerDetailTopBar(
                 sneakerDetailViewModel.sneakerDetailUiState.sneaker.name,
-                onBackClick
+                onBackClick,
+                onCartClick
             )
         }) { paddingValues ->
         Surface(modifier = Modifier.padding(paddingValues)) {
@@ -92,11 +94,12 @@ fun SneakerDetailScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SneakerDetailTopBar(title: String, onBackClick: () -> Unit) {
+fun SneakerDetailTopBar(title: String, onBackClick: () -> Unit, onCartClick: () -> Unit) {
     TopAppBar(title = {
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold
         )
     },
         navigationIcon = {
@@ -109,8 +112,13 @@ fun SneakerDetailTopBar(title: String, onBackClick: () -> Unit) {
             }
         },
         actions = {
-            Image(painter = painterResource(id = R.drawable.ic_cart), contentDescription = null)
-            Spacer(modifier = Modifier.width(24.dp))
+            IconButton(onClick = onCartClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_cart),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     )
 }
@@ -358,7 +366,7 @@ fun SneakerPrice(sneaker: Sneaker, onAddToCartClick: () -> Unit) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Rs. ${sneaker.price}",
+            text = "Rs.${sneaker.price}",
             color = MaterialTheme.colorScheme.primary,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold

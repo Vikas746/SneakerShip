@@ -32,10 +32,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +54,7 @@ import com.example.sneakership.R
 import com.example.sneakership.features.home.models.Sneaker
 import com.example.sneakership.features.sneakerDetails.models.SneakerDetailUiState
 import com.example.sneakership.features.sneakerDetails.viewmodel.SneakerDetailViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,14 +62,30 @@ fun SneakerDetailScreen(
     sneakerDetailViewModel: SneakerDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
-    Scaffold(topBar = {
-        SneakerDetailTopBar(
-            sneakerDetailViewModel.sneakerDetailUiState.sneaker.name,
-            onBackClick
-        )
-    }) { paddingValues ->
+    val snackBarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+        topBar = {
+            SneakerDetailTopBar(
+                sneakerDetailViewModel.sneakerDetailUiState.sneaker.name,
+                onBackClick
+            )
+        }) { paddingValues ->
         Surface(modifier = Modifier.padding(paddingValues)) {
-            ScreenDetailContent(sneakerDetailViewModel.sneakerDetailUiState)
+            ScreenDetailContent(sneakerDetailViewModel.sneakerDetailUiState) {
+                if (sneakerDetailViewModel.canAddToCart()) {
+                    sneakerDetailViewModel.addToCart()
+                    scope.launch {
+                        snackBarHostState.showSnackbar("Added to cart Successfully!")
+                    }
+                } else {
+                    scope.launch {
+                        snackBarHostState.showSnackbar("Please select Size and Color to add to cart")
+                    }
+                }
+            }
         }
     }
 }
@@ -95,7 +116,7 @@ fun SneakerDetailTopBar(title: String, onBackClick: () -> Unit) {
 }
 
 @Composable
-fun ScreenDetailContent(sneakerDetailUiState: SneakerDetailUiState) {
+fun ScreenDetailContent(sneakerDetailUiState: SneakerDetailUiState, onAddToCartClick: () -> Unit) {
     val sneaker = sneakerDetailUiState.sneaker
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom) {
         SneakerImage(modifier = Modifier.weight(1f, fill = true), sneakerDetailUiState)
@@ -104,7 +125,7 @@ fun ScreenDetailContent(sneakerDetailUiState: SneakerDetailUiState) {
             sneakerDetailUiState
         )
         Spacer(modifier = Modifier.height(24.dp))
-        SneakerInfo(sneaker, sneakerDetailUiState)
+        SneakerInfo(sneaker, sneakerDetailUiState, onAddToCartClick)
     }
 }
 
@@ -194,7 +215,8 @@ fun ImageIndicators(modifier: Modifier, uiState: SneakerDetailUiState) {
 @Composable
 private fun SneakerInfo(
     sneaker: Sneaker,
-    sneakerDetailUiState: SneakerDetailUiState
+    sneakerDetailUiState: SneakerDetailUiState,
+    onAddToCartClick: () -> Unit
 ) {
     Card(
         Modifier
@@ -221,7 +243,7 @@ private fun SneakerInfo(
                 sneakerDetailUiState.selectedColor.value = it
             }
             Spacer(modifier = Modifier.height(36.dp))
-            SneakerPrice(sneaker = sneaker)
+            SneakerPrice(sneaker = sneaker, onAddToCartClick)
         }
     }
 }
@@ -327,7 +349,7 @@ fun SneakerColor(
 }
 
 @Composable
-fun SneakerPrice(sneaker: Sneaker) {
+fun SneakerPrice(sneaker: Sneaker, onAddToCartClick: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = "Price : ",
@@ -342,12 +364,12 @@ fun SneakerPrice(sneaker: Sneaker) {
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.width(36.dp))
-        AddToCart()
+        AddToCart(onAddToCartClick)
     }
 }
 
 @Composable
-private fun AddToCart() {
+private fun AddToCart(onAddToCartClick: () -> Unit) {
     Text(
         text = "Add to Cart",
         color = Color.White,
@@ -359,5 +381,8 @@ private fun AddToCart() {
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(horizontal = 16.dp, vertical = 12.dp)
+            .clickable {
+                onAddToCartClick()
+            }
     )
 }

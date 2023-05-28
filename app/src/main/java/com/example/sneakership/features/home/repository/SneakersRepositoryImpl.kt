@@ -12,7 +12,18 @@ class SneakersRepositoryImpl @Inject constructor() : SneakersRepository {
     private fun getDummyData(): List<Sneaker> {
         val sneakers = mutableListOf<Sneaker>()
 
-        val brands = listOf("Adidas", "Nike", "Puma", "Reebok", "Sparks")
+        val brands = listOf(
+            "Adidas",
+            "Nike",
+            "Puma",
+            "Reebok",
+            "Sparks",
+            "Bata",
+            "Paragon",
+            "Fila",
+            "Liberty",
+            "Lancer"
+        )
         val random = Random()
 
         brands.forEach { brand ->

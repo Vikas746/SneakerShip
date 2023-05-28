@@ -22,6 +22,7 @@ class SneakerDetailViewModel @Inject constructor(
     ViewModel() {
 
     var sneakerDetailUiState: SneakerDetailUiState by mutableStateOf(SneakerDetailUiState())
+        private set
 
     init {
         val sneakerData: String? = savedStateHandle["sneaker"]

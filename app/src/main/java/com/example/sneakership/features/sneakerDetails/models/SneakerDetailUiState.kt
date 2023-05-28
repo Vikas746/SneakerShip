@@ -9,5 +9,6 @@ data class SneakerDetailUiState(
     val selectedSize: MutableState<Int> = mutableStateOf(0),
     val selectedColor: MutableState<String> = mutableStateOf(""),
     val imageCnt: Int = 3,
-    val currentImagePos: MutableState<Int> = mutableStateOf(1)
+    val currentImagePos: MutableState<Int> = mutableStateOf(1),
+    val addedToCart: MutableState<Boolean> = mutableStateOf(false)
 )

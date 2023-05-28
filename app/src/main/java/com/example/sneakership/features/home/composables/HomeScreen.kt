@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -199,12 +201,19 @@ private fun Sort(homeViewModel: HomeViewModel) {
                 .align(Alignment.CenterEnd)
         ) {
             var expanded: Boolean by remember { mutableStateOf(false) }
-            Text(
-                text = "Sort By",
-                color = colorResource(id = R.color.grey),
-                modifier = Modifier.clickable { expanded = true },
-                fontWeight = FontWeight.Bold
-            )
+            Row(modifier = Modifier.clickable { expanded = true }) {
+                Text(
+                    text = "Sort By ",
+                    color = colorResource(id = R.color.grey),
+                    fontWeight = FontWeight.Bold
+                )
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null,
+                    tint = colorResource(
+                        id = R.color.grey
+                    )
+                )
+            }
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }) {

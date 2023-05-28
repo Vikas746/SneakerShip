@@ -39,6 +39,7 @@ class SneakerDetailViewModel @Inject constructor(
         viewModelScope.launch {
             with(sneakerDetailUiState) {
                 sneakerDetailUseCase.addToCart(sneaker, selectedSize.value, selectedColor.value)
+                sneakerDetailUiState.addedToCart.value = true
             }
         }
     }

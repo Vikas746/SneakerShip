@@ -1,5 +1,7 @@
 package com.example.sneakership.features.sneakerDetails.composables
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,10 +40,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
@@ -54,6 +62,7 @@ import com.example.sneakership.R
 import com.example.sneakership.features.home.models.Sneaker
 import com.example.sneakership.features.sneakerDetails.models.SneakerDetailUiState
 import com.example.sneakership.features.sneakerDetails.viewmodel.SneakerDetailViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,15 +88,19 @@ fun SneakerDetailScreen(
             ScreenDetailContent(sneakerDetailViewModel.sneakerDetailUiState) {
                 if (sneakerDetailViewModel.canAddToCart()) {
                     sneakerDetailViewModel.addToCart()
-                    scope.launch {
-                        snackBarHostState.showSnackbar("Added to cart Successfully!")
-                    }
                 } else {
                     scope.launch {
                         snackBarHostState.showSnackbar("Please select Size and Color to add to cart")
                     }
                 }
             }
+        }
+    }
+
+    LaunchedEffect(sneakerDetailViewModel.sneakerDetailUiState.addedToCart.value) {
+        if (sneakerDetailViewModel.sneakerDetailUiState.addedToCart.value) {
+            snackBarHostState.showSnackbar("Added to cart Successfully!")
+            sneakerDetailViewModel.sneakerDetailUiState.addedToCart.value = false
         }
     }
 }
@@ -156,17 +169,31 @@ fun SneakerImage(modifier: Modifier, uiState: SneakerDetailUiState) {
             shape = CircleShape,
             color = MaterialTheme.colorScheme.primary
         ) {}
+        var startAnim by remember { mutableStateOf(false) }
+        val rotateAnim = animateFloatAsState(targetValue = if (startAnim) 0f else 360f, tween(1000))
+        val scaleAnim = animateFloatAsState(targetValue = if (startAnim) 0f else 1f, tween(1000))
         Image(
             painter = painterResource(id = R.drawable.sneaker),
             contentDescription = null,
             modifier = Modifier
                 .padding(80.dp)
                 .align(Alignment.Center)
+                .rotate(rotateAnim.value)
+                .scale(scaleAnim.value),
         )
+        val scope = rememberCoroutineScope()
+        val animate = {
+            startAnim = startAnim.not()
+            scope.launch {
+                delay(1000)
+                startAnim = startAnim.not()
+            }
+        }
         IconButton(
             onClick = {
                 if (uiState.currentImagePos.value != 1) {
                     --uiState.currentImagePos.value
+                    animate()
                 }
             },
             modifier = Modifier
@@ -179,11 +206,11 @@ fun SneakerImage(modifier: Modifier, uiState: SneakerDetailUiState) {
                 tint = colorResource(id = if (uiState.currentImagePos.value == 1) R.color.light_grey else R.color.black)
             )
         }
-
         IconButton(
             onClick = {
                 if (uiState.currentImagePos.value != uiState.imageCnt) {
                     ++uiState.currentImagePos.value
+                    animate()
                 }
             },
             modifier = Modifier

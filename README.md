@@ -13,7 +13,7 @@ Kotlin, MVVM, Jetpack Compose, Room, Coroutines, Hilt, JUnit, Mockito.
    - Also, It displays the order details section where the price related info is shown.
 
 ### Assumption
-Harcoded the sneakers data since there was no information related to API call like base url, end point.
+Hardcoded the sneakers data since there was no information related to API call like base url, end point.
 Also, not done retrofit setup and not handled API error cases due to unavailability of API info.
 
 ### Sample video

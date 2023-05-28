@@ -26,6 +26,9 @@ import androidx.compose.ui.unit.sp
 import com.example.sneakership.R
 import com.example.sneakership.features.home.models.Sneaker
 
+/**
+ * This composable displays the sneaker info in home screen.
+ */
 @Composable
 fun Sneaker(sneaker: Sneaker, onSneakerClick: () -> Unit) {
     Card(

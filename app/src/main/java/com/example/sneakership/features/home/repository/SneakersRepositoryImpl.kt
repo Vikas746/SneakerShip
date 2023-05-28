@@ -5,10 +5,18 @@ import java.util.Random
 import javax.inject.Inject
 
 class SneakersRepositoryImpl @Inject constructor() : SneakersRepository {
+
+    /**
+     * This method fetches sneakers data.
+     */
     override fun fetchSneakers(): List<Sneaker> {
         return getDummyData()
     }
 
+    /**
+     * This method creates a dummy data based on hardcoded brands.
+     * It provides 10 sneakers from each brand.
+     */
     private fun getDummyData(): List<Sneaker> {
         val sneakers = mutableListOf<Sneaker>()
 

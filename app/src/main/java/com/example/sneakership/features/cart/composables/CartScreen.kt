@@ -49,6 +49,9 @@ import com.example.sneakership.features.cart.models.CartUiState
 import com.example.sneakership.features.cart.viewmodel.CartViewModel
 import com.example.sneakership.features.sneakerDetails.models.SneakerDetail
 
+/**
+ * This composable acts as root to cart screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onBackClick: () -> Unit) {
@@ -65,6 +68,9 @@ fun CartScreen(cartViewModel: CartViewModel = hiltViewModel(), onBackClick: () -
     }
 }
 
+/**
+ * This composable displays message when there are no sneakers in cart.
+ */
 @Composable
 private fun EmptyCart() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -77,6 +83,9 @@ private fun EmptyCart() {
     }
 }
 
+/**
+ * This composable displays the top bar in cart screen
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CartScreenTopBar(onBackClick: () -> Unit) {
@@ -100,6 +109,9 @@ private fun CartScreenTopBar(onBackClick: () -> Unit) {
     )
 }
 
+/**
+ * This composable acts as root to cart screen content.
+ */
 @Composable
 private fun CartScreenContent(
     cartUiState: CartUiState,
@@ -112,6 +124,9 @@ private fun CartScreenContent(
     }
 }
 
+/**
+ * This composable displays the list of sneakers added to cart.
+ */
 @Composable
 private fun CartItems(
     modifier: Modifier,
@@ -129,6 +144,9 @@ private fun CartItems(
     }
 }
 
+/**
+ * This composable displays the sneaker added to cart.
+ */
 @Composable
 private fun CartItem(cartItem: SneakerDetail, onDeleteClick: (cartItem: SneakerDetail) -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -165,6 +183,9 @@ private fun CartItem(cartItem: SneakerDetail, onDeleteClick: (cartItem: SneakerD
     }
 }
 
+/**
+ * This composable displays the sneaker info like name, size etc.
+ */
 @Composable
 private fun CartItemInfo(cartItem: SneakerDetail) {
     Column {
@@ -200,6 +221,9 @@ private fun CartItemInfo(cartItem: SneakerDetail) {
     }
 }
 
+/**
+ * This composable displays the sneaker image.
+ */
 @Composable
 private fun CartItemImage() {
     Box(contentAlignment = Alignment.Center) {
@@ -221,6 +245,9 @@ private fun CartItemImage() {
     }
 }
 
+/**
+ * This composable displays the order details.
+ */
 @Composable
 private fun OrderDetails(cartUiState: CartUiState) {
     Card(
@@ -247,6 +274,9 @@ private fun OrderDetails(cartUiState: CartUiState) {
     }
 }
 
+/**
+ * This composable displays the order details title.
+ */
 @Composable
 private fun OrderDetailsTitle() {
     Text(
@@ -257,6 +287,9 @@ private fun OrderDetailsTitle() {
     )
 }
 
+/**
+ * This composable displays the subtotal of order.
+ */
 @Composable
 private fun SubTotal(subTotal: Int) {
     Text(
@@ -267,6 +300,9 @@ private fun SubTotal(subTotal: Int) {
     )
 }
 
+/**
+ * This composable displays the tax of order.
+ */
 @Composable
 private fun Tax(tax: Int) {
     Text(
@@ -277,6 +313,9 @@ private fun Tax(tax: Int) {
     )
 }
 
+/**
+ * This composable displays the total price of order.
+ */
 @Composable
 private fun TotalPrice(totalPrice: Int) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -297,6 +336,9 @@ private fun TotalPrice(totalPrice: Int) {
     }
 }
 
+/**
+ * This composable displays the checkout button.
+ */
 @Composable
 private fun CheckOut() {
     Text(

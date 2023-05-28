@@ -13,6 +13,9 @@ import com.example.sneakership.features.home.composables.HomeScreen
 import com.example.sneakership.features.sneakerDetails.composables.SneakerDetailScreen
 import com.google.gson.Gson
 
+/**
+ * This composable acts as nav host of app and contains navigation related operations.
+ */
 @Composable
 fun SneakerShipNavHost(
     modifier: Modifier = Modifier,
@@ -25,13 +28,15 @@ fun SneakerShipNavHost(
         startDestination = startDestination
     ) {
         composable("home") {
-            HomeScreen(onSneakerClick = {
-                val sneaker = Gson().toJson(it)
-                navController.navigate("sneakerDetails/$sneaker")
-            },
+            HomeScreen(
+                onSneakerClick = {
+                    val sneaker = Gson().toJson(it)
+                    navController.navigate("sneakerDetails/$sneaker")
+                },
                 onCartClick = {
                     navController.navigate("cart")
-                })
+                }
+            )
         }
 
         composable("sneakerDetails/{sneaker}", arguments = listOf(
@@ -39,9 +44,10 @@ fun SneakerShipNavHost(
                 type = NavType.StringType
             }
         )) {
-            SneakerDetailScreen(onBackClick = {
-                navController.popBackStack()
-            },
+            SneakerDetailScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                },
                 onCartClick = {
                     navController.navigate("cart")
                 }

@@ -8,6 +8,9 @@ import javax.inject.Inject
 class SneakerDetailsUseCaseImpl @Inject constructor(private val sneakerDetailRepository: SneakerDetailRepository) :
     SneakerDetailUseCase {
 
+    /**
+     * This method adds the sneaker to database.
+     */
     override suspend fun addToCart(sneaker: Sneaker, selectedSize: Int, selectedColor: String) {
         sneakerDetailRepository.insertSneakerDetail(
             SneakerDetail(

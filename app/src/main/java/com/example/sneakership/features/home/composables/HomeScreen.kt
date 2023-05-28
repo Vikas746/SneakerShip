@@ -53,6 +53,9 @@ import com.example.sneakership.features.home.models.Sneaker
 import com.example.sneakership.features.home.models.SortOptions
 import com.example.sneakership.features.home.viewmodels.HomeViewModel
 
+/**
+ * This composable is the root of home screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
@@ -75,8 +78,11 @@ fun HomeScreen(
     }
 }
 
+/**
+ * This composable displays the message when there are no sneakers.
+ */
 @Composable
-fun EmptySneakers() {
+private fun EmptySneakers() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(
             text = "No Sneakers, Try Again!!!",
@@ -87,9 +93,12 @@ fun EmptySneakers() {
     }
 }
 
+/**
+ * This composable displays the top bar in home screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenTopBar(homeViewModel: HomeViewModel, onCartClick: () -> Unit) {
+private fun HomeScreenTopBar(homeViewModel: HomeViewModel, onCartClick: () -> Unit) {
     TopAppBar(
         title = {
             if (homeViewModel.homeUiState.toolbarState.value == HomeToolbarState.TITLE) {
@@ -123,6 +132,9 @@ fun HomeScreenTopBar(homeViewModel: HomeViewModel, onCartClick: () -> Unit) {
     )
 }
 
+/**
+ * This composable displays the search bar in home screen top bar.
+ */
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun SearchBar(homeViewModel: HomeViewModel) {
@@ -162,6 +174,9 @@ private fun SearchBar(homeViewModel: HomeViewModel) {
     )
 }
 
+/**
+ * This composable displays the sneakers list.
+ */
 @Composable
 fun HomeScreenContent(homeViewModel: HomeViewModel, onSneakerClick: (sneaker: Sneaker) -> Unit) {
     Column {
@@ -182,6 +197,9 @@ fun HomeScreenContent(homeViewModel: HomeViewModel, onSneakerClick: (sneaker: Sn
 
 }
 
+/**
+ * This composable displays the sort UI in home screen.
+ */
 @Composable
 private fun Sort(homeViewModel: HomeViewModel) {
     Box(

@@ -65,6 +65,9 @@ import com.example.sneakership.features.sneakerDetails.viewmodel.SneakerDetailVi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * This composable is the root of sneaker detail screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SneakerDetailScreen(
@@ -105,6 +108,9 @@ fun SneakerDetailScreen(
     }
 }
 
+/**
+ * This composable displays the top bar in sneaker details screen.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SneakerDetailTopBar(title: String, onBackClick: () -> Unit, onCartClick: () -> Unit) {
@@ -136,6 +142,9 @@ fun SneakerDetailTopBar(title: String, onBackClick: () -> Unit, onCartClick: () 
     )
 }
 
+/**
+ * This composable acts as root of sneaker detail content.
+ */
 @Composable
 fun ScreenDetailContent(sneakerDetailUiState: SneakerDetailUiState, onAddToCartClick: () -> Unit) {
     val sneaker = sneakerDetailUiState.sneaker
@@ -150,6 +159,9 @@ fun ScreenDetailContent(sneakerDetailUiState: SneakerDetailUiState, onAddToCartC
     }
 }
 
+/**
+ * This composable displays the sneaker image.
+ */
 @Composable
 fun SneakerImage(modifier: Modifier, uiState: SneakerDetailUiState) {
     Box(modifier = modifier) {
@@ -226,6 +238,9 @@ fun SneakerImage(modifier: Modifier, uiState: SneakerDetailUiState) {
     }
 }
 
+/**
+ * This composable displays the sneaker image indicators.
+ */
 @Composable
 fun ImageIndicators(modifier: Modifier, uiState: SneakerDetailUiState) {
     Row(
@@ -247,6 +262,9 @@ fun ImageIndicators(modifier: Modifier, uiState: SneakerDetailUiState) {
     }
 }
 
+/**
+ * This composable displays the sneaker information like name, brand etc.
+ */
 @Composable
 private fun SneakerInfo(
     sneaker: Sneaker,
@@ -283,6 +301,9 @@ private fun SneakerInfo(
     }
 }
 
+/**
+ * This composable displays the name of sneaker.
+ */
 @Composable
 private fun SneakerTitle(sneaker: Sneaker) {
     Text(
@@ -293,6 +314,9 @@ private fun SneakerTitle(sneaker: Sneaker) {
     )
 }
 
+/**
+ * This composable displays the brand of sneaker.
+ */
 @Composable
 private fun SneakerBrand(sneaker: Sneaker) {
     Text(
@@ -302,6 +326,9 @@ private fun SneakerBrand(sneaker: Sneaker) {
     )
 }
 
+/**
+ * This composable displays the sizes of sneaker.
+ */
 @Composable
 fun SneakerSize(sneaker: Sneaker, selectedSize: Int, onSizeSelected: (size: Int) -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -340,6 +367,9 @@ fun SneakerSize(sneaker: Sneaker, selectedSize: Int, onSizeSelected: (size: Int)
     }
 }
 
+/**
+ * This composable displays the colors of sneaker.
+ */
 @Composable
 fun SneakerColor(
     sneaker: Sneaker,
@@ -383,6 +413,9 @@ fun SneakerColor(
     }
 }
 
+/**
+ * This composable displays the price of sneaker.
+ */
 @Composable
 fun SneakerPrice(sneaker: Sneaker, onAddToCartClick: () -> Unit) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -403,6 +436,9 @@ fun SneakerPrice(sneaker: Sneaker, onAddToCartClick: () -> Unit) {
     }
 }
 
+/**
+ * This composable displays add to cart button.
+ */
 @Composable
 private fun AddToCart(onAddToCartClick: () -> Unit) {
     Text(

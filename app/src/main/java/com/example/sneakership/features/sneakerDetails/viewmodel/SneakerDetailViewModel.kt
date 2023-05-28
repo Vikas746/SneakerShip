@@ -24,6 +24,9 @@ class SneakerDetailViewModel @Inject constructor(
     var sneakerDetailUiState: SneakerDetailUiState by mutableStateOf(SneakerDetailUiState())
         private set
 
+    /**
+     * Here sneaker data is retrieved, which is sent from home screen.
+     */
     init {
         val sneakerData: String? = savedStateHandle["sneaker"]
         sneakerData?.let {
@@ -32,9 +35,15 @@ class SneakerDetailViewModel @Inject constructor(
         }
     }
 
+    /**
+     * This method checks whether all the necessary information is gathered or not, to add a sneaker to cart.
+     */
     fun canAddToCart() =
         sneakerDetailUiState.selectedSize.value != 0 && sneakerDetailUiState.selectedColor.value.isNotEmpty()
 
+    /**
+     * This method adds the sneaker to database.
+     */
     fun addToCart() {
         viewModelScope.launch {
             with(sneakerDetailUiState) {

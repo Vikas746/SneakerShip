@@ -22,6 +22,9 @@ class CartViewModel @Inject constructor(private val cartUseCase: CartUseCase) : 
         fetchCartItems()
     }
 
+    /**
+     * This method fetches the sneakers which are added to cart and updates the ui state.
+     */
     private fun fetchCartItems() {
         viewModelScope.launch {
             cartUseCase.fetchCartItems().collectLatest {
@@ -37,12 +40,18 @@ class CartViewModel @Inject constructor(private val cartUseCase: CartUseCase) : 
         }
     }
 
+    /**
+     * This method calculates the subtotal of order.
+     */
     private fun calculateSubTotal(cartItems: List<SneakerDetail>): Int {
         var subTotal = 0
         cartItems.forEach { subTotal += it.price }
         return subTotal
     }
 
+    /**
+     * This method deletes the sneaker from database.
+     */
     fun deleteCartItem(sneakerDetail: SneakerDetail) {
         viewModelScope.launch {
             cartUseCase.deleteCartItem(sneakerDetail)

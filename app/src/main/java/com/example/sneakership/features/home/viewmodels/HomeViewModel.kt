@@ -24,11 +24,17 @@ class HomeViewModel @Inject constructor(private val useCase: HomeUseCase) : View
         fetchSneakers()
     }
 
+    /**
+     * This method fetches sneakers data.
+     */
     private fun fetchSneakers() {
         sneakers.addAll(useCase.fetchSneakers())
         homeUiState = homeUiState.copy(sneakers = getSortedList(sneakers))
     }
 
+    /**
+     * This method searches for sneaker based on the input search text.
+     */
     fun search() {
         val searchText = homeUiState.searchText.value
         if (searchText.isNotEmpty()) {
@@ -42,16 +48,25 @@ class HomeViewModel @Inject constructor(private val useCase: HomeUseCase) : View
         }
     }
 
+    /**
+     * This method clears the search text and shows the title in app bar of home screen.
+     */
     fun onSearchCleared() {
         homeUiState.toolbarState.value = HomeToolbarState.TITLE
         homeUiState.searchText.value = ""
         homeUiState = homeUiState.copy(sneakers = getSortedList(sneakers))
     }
 
+    /**
+     * This method initiates the sort and updates the ui state.
+     */
     fun sort() {
         homeUiState = homeUiState.copy(sneakers = getSortedList(homeUiState.sneakers))
     }
 
+    /**
+     * This method provides the sorted sneakers list based on sort option selection.
+     */
     private fun getSortedList(sneakers: List<Sneaker>): List<Sneaker> {
         return when (homeUiState.sortOption.value) {
             SortOptions.A_TO_Z -> sneakers.sortedBy { it.name }

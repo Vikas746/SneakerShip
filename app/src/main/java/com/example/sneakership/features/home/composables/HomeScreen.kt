@@ -1,11 +1,17 @@
 package com.example.sneakership.features.home.composables
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -13,15 +19,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.sneakership.R
+import com.example.sneakership.features.home.models.HomeToolbarState
 import com.example.sneakership.features.home.models.Sneaker
 import com.example.sneakership.features.home.viewmodels.HomeViewModel
 
@@ -33,29 +48,51 @@ fun HomeScreen(
     onCartClick: () -> Unit
 ) {
     Scaffold(
-        topBar = { HomeScreenTopBar(onCartClick) }
+        topBar = { HomeScreenTopBar(homeViewModel, onCartClick) }
     ) { paddingValues ->
         Surface(modifier = Modifier.padding(paddingValues)) {
-            HomeScreenContent(homeViewModel) {
-                onSneakerClick(it)
+            if (homeViewModel.homeUiState.sneakers.isNotEmpty()) {
+                HomeScreenContent(homeViewModel) {
+                    onSneakerClick(it)
+                }
+            } else {
+                EmptySneakers()
             }
         }
     }
 }
 
+@Composable
+fun EmptySneakers() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(
+            text = "No Sneakers, Try Again!!!",
+            color = colorResource(id = R.color.grey),
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenTopBar(onCartClick: () -> Unit) {
+fun HomeScreenTopBar(homeViewModel: HomeViewModel, onCartClick: () -> Unit) {
     TopAppBar(
         title = {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
-            )
+            if (homeViewModel.homeUiState.toolbarState.value == HomeToolbarState.TITLE) {
+                Text(
+                    text = stringResource(id = R.string.app_name),
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+            } else {
+                SearchBar(homeViewModel)
+            }
         },
         actions = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                homeViewModel.homeUiState.toolbarState.value = HomeToolbarState.SEARCH
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = null,
@@ -70,6 +107,45 @@ fun HomeScreenTopBar(onCartClick: () -> Unit) {
                 )
             }
         }
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun SearchBar(homeViewModel: HomeViewModel) {
+    val focusManager = LocalFocusManager.current
+    TextField(
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            containerColor = colorResource(id = R.color.background)
+        ),
+        value = homeViewModel.homeUiState.searchText.value,
+        onValueChange = {
+            homeViewModel.homeUiState.searchText.value = it
+        },
+        trailingIcon = {
+            IconButton(onClick = {
+                homeViewModel.onSearchCleared()
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Clear,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        },
+        singleLine = true,
+        placeholder = {
+            Text(text = "search sneaker", color = MaterialTheme.colorScheme.primary)
+        },
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(onSearch = {
+            focusManager.clearFocus()
+            homeViewModel.search()
+        })
     )
 }
 

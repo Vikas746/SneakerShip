@@ -12,10 +12,6 @@ Kotlin, MVVM, Jetpack Compose, Room, Coroutines, Hilt, JUnit, Mockito.
    - User can remove the sneaker from cart.
    - Also, It displays the order details section where the price related info is shown.
 
-### Assumption
-Hardcoded the sneakers data since there was no information related to API call like base url, end point.
-Also, not done retrofit setup and not handled API error cases due to unavailability of API info.
-
 ### Sample video
 
 https://github.com/Vikas746/SneakerShip/assets/68139031/a893a787-50af-4fbb-a856-166878731eb3

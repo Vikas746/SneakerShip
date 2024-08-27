@@ -85,7 +85,7 @@ fun HomeScreen(
 private fun EmptySneakers() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(
-            text = "No Sneakers, Try Again!!!",
+            text = "No Sneakers, Try Again!!",
             color = colorResource(id = R.color.grey),
             fontSize = 20.sp,
             textAlign = TextAlign.Center
